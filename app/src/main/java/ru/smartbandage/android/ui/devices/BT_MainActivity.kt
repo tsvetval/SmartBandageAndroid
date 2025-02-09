@@ -18,6 +18,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.UiThread
@@ -284,26 +285,39 @@ class BT_MainActivity : AppCompatActivity() {
     private val connectionEventListener by lazy {
         ConnectionEventListener().apply {
             onConnectionSetupComplete = { gatt ->
-                Intent(this@BT_MainActivity, BleOperationsActivity::class.java).also {
-                    it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
-                    startActivity(it)
-                }
-            }
-            @SuppressLint("MissingPermission")
-            onDisconnect = {
-                val deviceName = if (hasRequiredBluetoothPermissions()) {
-                    it.name
+                val checkBox: CheckBox = findViewById(R.id.devModeCheckBox)
+                if (checkBox.isChecked) {
+                    Intent(this@BT_MainActivity, BleOperationsActivity::class.java).also {
+                        it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
+                        startActivity(it)
+                    }
                 } else {
-                    "device"
+                    Intent(this@BT_MainActivity, BandageDeviceActivity::class.java).also {
+                        it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
+                        startActivity(it)
+
+
+                    }
                 }
-                runOnUiThread {
-                    AlertDialog.Builder(this@BT_MainActivity)
-                        .setTitle(R.string.disconnected)
-                        .setMessage(
-                            getString(R.string.disconnected_or_unable_to_connect_to_device, deviceName)
-                        )
-                        .setPositiveButton(R.string.ok, null)
-                        .show()
+                @SuppressLint("MissingPermission")
+                onDisconnect = {
+                    val deviceName = if (hasRequiredBluetoothPermissions()) {
+                        it.name
+                    } else {
+                        "device"
+                    }
+                    runOnUiThread {
+                        AlertDialog.Builder(this@BT_MainActivity)
+                            .setTitle(R.string.disconnected)
+                            .setMessage(
+                                getString(
+                                    R.string.disconnected_or_unable_to_connect_to_device,
+                                    deviceName
+                                )
+                            )
+                            .setPositiveButton(R.string.ok, null)
+                            .show()
+                    }
                 }
             }
         }

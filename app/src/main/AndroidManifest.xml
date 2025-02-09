@@ -24,26 +24,34 @@
         android:required="true" />
 
     <application
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_bandage"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_bandage_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="ru.smartbandage.android.BleOperationsActivity"
+        <activity android:name="ru.smartbandage.android.ui.devices.BleOperationsActivity"
             android:screenOrientation="portrait"
             android:exported="false"
             />
-        <activity android:name="ru.smartbandage.android.MainActivity"
+        <activity android:name="ru.smartbandage.android.ui.devices.BT_MainActivity"
             android:screenOrientation="portrait"
             android:exported="true"
             >
+        </activity>
+        <activity
+            android:name="ru.smartbandage.android.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:exported="true"
+            android:theme="@style/Theme.KotlinWebView.NoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

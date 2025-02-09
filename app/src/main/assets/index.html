@@ -1,0 +1,206 @@
+<!-- index.html content -->
+
+<html>
+<head>
+    <!-- Tip: Use relative URLs when referring to other in-app content to give
+              your app code the flexibility to change the scheme or domain as
+              necessary. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="/assets/chart.js"></script>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="/assets/bootstrap/js/bootstrap.min.js" ></script>
+</head>
+<body onload="drawCharts();">
+<div class="container" style="padding-top: 20px;">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="row">
+                <div class="col-xs-4">ID</div>
+                <div class="col-xs-8">
+                    <select class="form-control">
+                        <option>1</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">ФИО</div>
+                <div class="col-xs-8">
+                    <input class="form-control" value="Иванов И.И.">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">Возраст</div>
+                <div class="col-xs-8">
+                    <input class="form-control" value="53">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">Пол</div>
+                <div class="col-xs-8">
+                    <select class="form-control">
+                        <option>Муж.</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xs-6">
+            <div class="row">
+                <div class="col-xs-4">Дата установки</div>
+                <div class="col-xs-8">
+                    <input class="form-control" value="12.05.2024">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">Время установки</div>
+                <div class="col-xs-8">
+                    <input class="form-control" value="09:00">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">Пометки</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <textarea class="col-xs-12" rows="3">Рана стопы. Размеры 5*8 см. Глубина 5мм </textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div>
+    <canvas id="temperatureChart" style="max-height:350px"></canvas>
+</div>
+<div >
+    <canvas id="impedanceChart" style="max-height:350px"></canvas>
+</div>
+
+<script type="text/javascript">
+    var temperatureChartObj;
+    var impedanceChartObj;
+
+    function drawCharts() {
+        doDrawCharts();
+        setTimeout(() => {
+            temperatureChartObj.destroy()
+            impedanceChartObj.destroy()
+            drawCharts();
+        }, 60000);
+    }
+
+    function doDrawCharts() {
+        const temperatureLabels =  generateTime(7);
+        const temperatureChartData = {
+          labels: temperatureLabels,
+          datasets: [{
+            label: 'Температура',
+            data: [34, 36, 36, 35, 36, 35, 36],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.5
+          },
+          {
+            label: 'Инфицирование',
+            data: [38, 38, 38, 38, 38, 38, 38],
+            fill: false,
+            borderColor: 'red',
+            tension: 0.5
+          }
+          ]
+        };
+
+        const temperatureChart =  document.getElementById('temperatureChart');
+        temperatureChartObj = new Chart(temperatureChart, {
+            type: 'line',
+            data: temperatureChartData,
+            options: {
+                scales: {
+                    y: {
+                        suggestedMin: 30,
+                        suggestedMax: 45,
+                        title: {
+                            text: "T(℃)",
+                            display: true
+                        }
+                    },
+                },
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: 'top',
+                  },
+                  title: {
+                    display: false,
+                    text: 'Температура'
+                  }
+                }
+            }
+          });
+
+
+        const impedanceLabels =  generateTime(7);
+        const impedanceChartData = {
+          labels: impedanceLabels,
+          datasets: [{
+            label: 'Импеданс',
+            data: [100, 150, 300, 400, 400, 450, 500],
+            fill: false,
+            borderColor: 'orange',
+            tension: 0.5
+          }]
+        };
+
+        const impedanceChart =  document.getElementById('impedanceChart');
+        impedanceChartObj = new Chart(impedanceChart, {
+            type: 'line',
+            data: impedanceChartData,
+            options: {
+                scales: {
+                    y: {
+                        suggestedMin: 0,
+                        suggestedMax: 1000,
+                        title: {
+                            text: "Ω",
+                            display: true
+                        }
+                    }
+                },
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: 'top',
+                  },
+                  title: {
+                    display: false,
+                    text: 'Импеданс'
+                  }
+                }
+            }
+          });
+    }
+    function generateTime(points) {
+      var result = [];
+      var today = new Date();
+      today.setMinutes(today.getMinutes() - (5*(points-1)));
+
+
+      for (let i = 0; i < points; i++) {
+        var h = today.getHours();
+        var m = today.getMinutes();
+        //result.push(today.toLocaleTimeString());
+        result.push(String(h).padStart(2, "0") +":"+ String(m).padStart(2, "0"));
+        today.setMinutes(today.getMinutes() + 5);
+      }
+      return result;
+    }
+</script>
+
+</body>
+</html>
+
+

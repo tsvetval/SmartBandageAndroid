@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.smartbandage.android.BleOperationsActivity">
+    tools:context="ru.smartbandage.android.ui.devices.BleOperationsActivity">
 
     <LinearLayout
         android:id="@+id/mtu_container"

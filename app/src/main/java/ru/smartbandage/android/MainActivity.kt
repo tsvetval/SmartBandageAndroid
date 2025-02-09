@@ -1,5 +1,6 @@
 package ru.smartbandage.android
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -19,6 +20,8 @@ import androidx.webkit.WebViewAssetLoader
 import androidx.webkit.WebViewClientCompat
 import com.google.android.material.navigation.NavigationView
 import ru.smartbandage.android.databinding.ActivityMainBinding
+import ru.smartbandage.android.ui.devices.BT_MainActivity
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -57,7 +60,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onGroupItemClick(item: MenuItem) {
-        findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.nav_settings)
+        val intent = Intent(this@MainActivity, BT_MainActivity::class.java)
+        startActivity(intent)
+        //findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.nav_settings)
     }
 
     override fun onSupportNavigateUp(): Boolean {

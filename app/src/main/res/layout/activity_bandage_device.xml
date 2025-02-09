@@ -1,97 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.smartbandage.android.ui.devices.BandageDeviceActivity">
+    android:padding="16dp">
 
-    <LinearLayout
-        android:id="@+id/mtu_container"
+    <!-- Заголовок -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Параметры устройства"
+        android:textSize="24sp"
+        android:textAlignment="center"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <EditText
-            android:id="@+id/mtu_field"
-            android:hint="MTU value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:importantForAutofill="no"
-            android:inputType="number"
-            android:digits="01234567890" />
-
-        <Button
-            android:id="@+id/request_mtu_button"
-            android:text="Request MTU"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/characteristics_title"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:text="Characteristics (tap to interact)"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/mtu_container"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <LinearLayout
-        app:layout_constraintTop_toBottomOf="@id/characteristics_title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
+    <!-- Контейнер для параметров -->
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintBottom_toTopOf="@id/guideline">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/characteristics_recycler_view"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:scrollbarFadeDuration="0"
-            android:scrollbars="vertical"
-            tools:listitem="@layout/row_characteristic" />
-
-        <TextView
-            android:id="@+id/log_title"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:text="Log"
-            android:textStyle="bold"
-            android:textSize="16sp" />
+            android:orientation="vertical"
+            android:paddingTop="16dp">
 
-        <ScrollView
-            android:id="@+id/log_scroll_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="4dp">
-
-            <TextView
-                android:id="@+id/log_text_view"
-                android:scrollbars="vertical"
-                android:gravity="bottom"
+            <!-- Пример элемента параметра -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
 
-        </ScrollView>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Текущая температура"
+                    android:textSize="12sp"/>
 
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/temperatureId"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:autofillHints="Знаечние температуры"
+                    android:inputType="text"
+                    android:enabled="false" />
 
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Изменить"
+                    android:onClick="onEditClick"/>
+            </LinearLayout>
+
+            <!-- Дублируйте блок для других параметров -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Текущий эмпиданс"
+                    android:textSize="16sp"/>
+
+                <EditText
+                    android:id="@+id/empidanceId"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:inputType="number"
+                    android:enabled="false"
+                    android:text="100"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Изменить"
+                    android:onClick="onEditClick"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+    <!-- TextArea внизу -->
+    <ScrollView
+        android:id="@+id/logScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:hint="Дополнительные заметки"
+        android:inputType="textMultiLine"
+        android:minLines="3"
+        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <TextView
+            android:id="@+id/logTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Дополнительные заметки"
+            android:inputType="textMultiLine"
+            />
+
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

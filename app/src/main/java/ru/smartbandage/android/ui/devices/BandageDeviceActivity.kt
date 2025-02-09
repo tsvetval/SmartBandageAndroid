@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import ru.smartbandage.android.R
 import ru.smartbandage.android.ble.BandageCommandsWithNotification
 import ru.smartbandage.android.ble.ConnectionManager
 import ru.smartbandage.android.ble.ConnectionManager.parcelableExtraCompat
@@ -39,9 +41,12 @@ class BandageDeviceActivity : AppCompatActivity() {
         cmdRunner.registerManager()
 
         cmdRunner.readTemperature {
+            val editText = findViewById<EditText>(R.id.temperatureId)
+            binding.temperatureId.setText(it)
             log("ReadTemperatue $it")
         }
         cmdRunner.readTemperature {
+            binding.empidanceId.setText(it)
             log("ReadTemperatue $it")
         }
         cmdRunner.readTemperature {

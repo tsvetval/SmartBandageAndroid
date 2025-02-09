@@ -1,2 +1,2 @@
 # SmartBandageAndroid
-Android inntegration with BlueTooth LE device
+Android integration with BlueTooth LE device
